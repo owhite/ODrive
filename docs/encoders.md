@@ -122,6 +122,12 @@ Noise is found in all circuits, life is just about figuring out if it is prevent
 
 The following _might_ mitigate noise problems. Use shielded cable, or use twisted pairs, where one side of each twisted pair is tied to ground, the other side is tied to your signal. If you are using SPI, use a 20-50 ohm resistor in series on CLK, which is more susceptable noise.
 
+Another very important indicator of problems with your encoder is if you are using the z channel on the odrive, which serves as _index_. Briefly, index reports a pulse once every rotation, and for some reason it seems to be quite susceptible to noise. If you are able to run calibrate, here is one test to see  if your index is working properly, perform this test:
+
+BLAH BLAH BLAH
+
+One way to mitigate problems on index, is to put a ~0.1uF capacitor between that signal and ground. Solder the capacitor at the board. 
+
 ## AS5047/AS5048 Encoders
 The AS5047/AS5048 encoders are Hall Effect/Magenetic sensors that can serve as rotary encoders for the ODrive.
 
