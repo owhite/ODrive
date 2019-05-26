@@ -26,7 +26,7 @@ Describing how to complete above steps is outside of the scope of this documenta
 
 First, you will  need to be able to wire some devices to the ODrive digital inputs. There are a lot of options for wiring up your endpoint detectors - you will have to work out the details of connecting your device. To get you started this is a diagram of switches and devices that could work to detect your endpoints. 
 
-![Endpoint figure](/endpoint_figure.png)
+![Endpoint figure](https://github.com/owhite/ODrive/blob/master/docs/endpoint_figure.png)
 
 Once motor and encoder calibration is complete, and your endpoint detectors are connected to the gpio pins, power up your ODrive. You will then need to set these variables:
 
