@@ -92,4 +92,7 @@ Once everything is ready, this is an example sequence of commands you can use fo
 * `<axis>.requested_state = 11`
 
 ### Notes on how the code works. 
+#### _ WETMELON PLEASE CONFIRM !!! : 
+For background, this branch initiates the homing process in the function `axis::run_state_machine_loop()`. When the user calls `AXIS_STATE_HOMING` the program is sent to `controller::home_axis()`. That function sets up the speed of travel, and sets the axis state to `HOMING_STATE_HOMING`. `Axis::run_closed_loop_control_loop` handles operations when the motor is armed. This function tests that `HOMING_STATE_HOMING` state is set, if it is, it runs the motor until it reaches `set_pos_setpoint`. After that occurs, the state `HOMING_STATE_MOVE_TO_ZERO` is then set, and the motor to travels to `config.offset`. How simple was that? 
+
 
