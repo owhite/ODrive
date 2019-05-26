@@ -132,7 +132,7 @@ Then save_configuration and reboot.
 
 ### Performing a homing sequence. 
 
-Once everything is ready, this is an example sequence of commands you can use for manually performing homing. You probably need to do something more elaborate for when you build the next consciously self-aware android, but try manual homingfirst with: 
+Once everything is ready, this is an example sequence of commands you can use for manually performing homing. You probably need to do something more elaborate for when you build the next consciously self-aware android, but try manual homing first with: 
 
 ```
 <odrv>.<axis>.requested_state = AXIS_STATE_ENCODER_INDEX_SEARCH
