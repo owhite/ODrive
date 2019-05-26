@@ -66,7 +66,7 @@ The debouncing time, in milliseconds, for this endstop.  Most switches exhibit s
 ### is_active_high
 This is how you configure the endstop to be either "NPN" or "PNP".  An "NPN" configuration would be `is_active_high = False` whereas a PNP configuration is `is_active_high = True`.  Refer to the following table for more information:
 
-![Endstop configuration](Endstop_configuration.png)  
+![Endstop configuration](https://github.com/owhite/ODrive/blob/master/docs/Endstop_configuration.png)  
 3D printer endstops (like those that come with a RAMPS 1.4) are typically configuration **4**.
 
 ### Configuring an endstop
