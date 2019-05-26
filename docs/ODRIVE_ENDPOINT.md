@@ -72,8 +72,8 @@ For homing, your motor/odrive configuration still needs to be calibrated. Remove
 `<axis>.requested_state = AXIS_STATE_FULL_CALIBRATION_SEQUENCE`
 
 the motor should beep and complete it's calibration. The calibration sequence should slowly rotate in one direction, and slowly return back. Store the fact that you've succeeded with:
-`<axis>.motor.config.pre_calibrated  = True 
-`<axis>.encoder.config.pre_calibrated = True
+`<axis>.motor.config.pre_calibrated  = True` 
+`<axis>.encoder.config.pre_calibrated = True`
 Then save_configuration and reboot.
 
 ### Performing a homing sequence. 
