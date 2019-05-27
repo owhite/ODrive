@@ -127,7 +127,7 @@ the motor should beep and complete it's calibration. The calibration sequence sh
 <odrv>.<axis>.motor.config.pre_calibrated  = True
 <odrv>.<axis>.encoder.config.pre_calibrated = True
 ```
-Then save_configuration and reboot.
+Then save_configuration and reboot. Remember, the motor.config.pre_calibrated and encoder.config.pre_calibrated commands are only valid if you are connecting an index pin, or if you have an absolute encoder. 
 
 ## Homing WETMELON PLEASE REVIEW
 Homing is possible once the ODrive has closed loop control over the axis.  To trigger homing, we use must first be in AXIS_STATE_CLOSED_LOOP_CONTROL, then we call`<odrv>.<axis>.controller.home_axis()`  This starts the homing sequence.  The homing sequence works as follows:
