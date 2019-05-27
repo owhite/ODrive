@@ -66,7 +66,7 @@ The debouncing time, in milliseconds, for this endstop.  Most switches exhibit s
 ### is_active_high
 This is how you configure the endstop to be either "NPN" or "PNP".  An "NPN" configuration would be `is_active_high = False` whereas a PNP configuration is `is_active_high = True`.  Refer to the following table for more information:
 
-![Endstop configuration](https://github.com/owhite/ODrive/blob/master/docs/Endstop_configuration.png)  
+![Endstop configuration](Endstop_configuration.png)  
 3D printer endstops (like those that come with a RAMPS 1.4) are typically configuration **4**.
 
 ### Configuring an endstop
@@ -96,7 +96,6 @@ other config items that might help are:
 
 `offset` works as a home switch position. It applies to min_endstop and represents the number of counts required to get home. Suppose home is 100 counts away from min_endstop, set this value to -100. 
 
-*WETMELON PLEASE CONFIRM if the statement about vel_limit is true!!!*
 `vel_limit` is the speed in counts/second and is the travel speed to reach offset. 
 
 ### Additional endstop devices
@@ -130,9 +129,19 @@ the motor should beep and complete it's calibration. The calibration sequence sh
 ```
 Then save_configuration and reboot.
 
+## Homing WETMELON PLEASE REVIEW
+Homing is possible once the ODrive has closed loop control over the axis.  To trigger homing, we use must first be in AXIS_STATE_CLOSED_LOOP_CONTROL, then we call`<odrv>.<axis>.controller.home_axis()`  This starts the homing sequence.  The homing sequence works as follows:
+
+1. Verify that the `min_endstop` is `enabled`
+2. Drive towards the `min_endstop` in velocity control mode at `controller.config.homing_speed`
+3. When the `min_endstop` is pressed, set the current position = `min_endstop.config.offset`
+4. Request position control mode, and move to the positon = `0`
+
+At the code level this branch initiates the homing process in the function `axis::run_state_machine_loop()`. When the user calls `AXIS_STATE_HOMING` the program is sent to `controller::home_axis()`. That function sets up the speed of travel, and sets the axis state to `HOMING_STATE_HOMING`. `Axis::run_closed_loop_control_loop` handles operations when the motor is armed. This function tests that `HOMING_STATE_HOMING` state is set, if it is, it runs the motor until it reaches `set_pos_setpoint`. After that occurs, the state `HOMING_STATE_MOVE_TO_ZERO` is then set, and the motor to travels to `config.offset`. 
+
 ### Performing a homing sequence. 
 
-Once everything is ready, this is an example sequence of commands you can use for manually performing homing. You probably need to do something more elaborate for when you build the next consciously self-aware android, but try manual homing first with: 
+Once everything is ready, this is an example sequence of commands you can use for manually performing homing. You probably need to do something more elaborate for when you build the next consciously self-aware android, but try manual homingfirst with: 
 
 ```
 <odrv>.<axis>.requested_state = AXIS_STATE_ENCODER_INDEX_SEARCH
@@ -147,15 +156,6 @@ Once everything is ready, this is an example sequence of commands you can use fo
 *NOTE:* sometimes odrivetool will not have heard of `AXIS_STATE_HOMING` and in that case you can run:
 * `<axis>.requested_state = 11`
 
-#### WETMELON !!! THE MAIN PROBLEM HERE IS THIS SECTION AND MY SECTION JUST ABOVE THIS ARE KIND OF DIFFERENT: 
-## Homing
-Homing is possible once the ODrive has closed loop control over the axis.  To trigger homing, we use must first be in AXIS_STATE_CLOSED_LOOP_CONTROL, then we call`<odrv>.<axis>.controller.home_axis()`  This starts the homing sequence.  The homing sequence works as follows:
-
-1. Verify that the `min_endstop` is `enabled`
-2. Drive towards the `min_endstop` in velocity control mode at `controller.config.homing_speed`
-3. When the `min_endstop` is pressed, set the current position = `min_endstop.config.offset`
-4. Request position control mode, and move to the positon = `0`
-
 ### Homing at startup
 It is possible to configure the odrive to enter homing immediately at startup. For safety reasons, we require the user to specifically enable closed loop control at startup, even if homing is requested.  Thus, to enable homing at startup, the following must be configured:
 
@@ -163,8 +163,3 @@ It is possible to configure the odrive to enter homing immediately at startup. F
 <odrv>.<axis>.config.startup_closed_loop_control = True
 <odrv>.<axis>.config.startup_homing = True
 ```
-
-
-### Notes on how the code works. 
-#### _ WETMELON PLEASE CONFIRM !!! : 
-For background, this branch initiates the homing process in the function `axis::run_state_machine_loop()`. When the user calls `AXIS_STATE_HOMING` the program is sent to `controller::home_axis()`. That function sets up the speed of travel, and sets the axis state to `HOMING_STATE_HOMING`. `Axis::run_closed_loop_control_loop` handles operations when the motor is armed. This function tests that `HOMING_STATE_HOMING` state is set, if it is, it runs the motor until it reaches `set_pos_setpoint`. After that occurs, the state `HOMING_STATE_MOVE_TO_ZERO` is then set, and the motor to travels to `config.offset`. How simple was that? 
